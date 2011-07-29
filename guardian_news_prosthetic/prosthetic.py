@@ -34,7 +34,7 @@ import models
 NUM_SEARCH_TERMS = 1
 MAX_MAIN_LENGTH = 1024
 
-class GuardianNews(Prosthetic):
+class Guardian(Prosthetic):
     """A prosthetic that finds news items based on the Weavr's state."""
 
     # run throttle
@@ -61,7 +61,10 @@ class GuardianNews(Prosthetic):
     def search_terms(self, run):
         """Create a list of search terms from the run"""
         all_terms = run['combined_keywords'].split()
-        subset = random.sample(all_terms, NUM_SEARCH_TERMS)
+        if NUM_SEARCH_TERMS >= len(all_terms):
+            subset = all_terms
+        else:
+            subset = random.sample(all_terms, NUM_SEARCH_TERMS)
         return " ".join(subset)
 
     def format_news(self, item):
